@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+                name="login"
+                type="com.test.testclientslist.viewModel.LoginViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:app="http://schemas.android.com/apk/res-auto"
+         xmlns:tools="http://schemas.android.com/tools"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         tools:context=".ui.LoginActivity">
+
+        <ProgressBar
+                android:id="@+id/progressbar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{login.isLoading ? View.VISIBLE : View.INVISIBLE}"
+                android:indeterminate="true"
+                android:max="100"
+                android:layout_marginTop="0dp"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/logo" />
+
+            <EditText
+                    android:id="@+id/email"
+                    style="@style/loginEditText"
+                    android:inputType="textEmailAddress"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="10dp"
+                    android:text="@={login.email}"
+                    android:hint="@string/email" />
+
+            <EditText
+                    android:id="@+id/password"
+                    android:drawableStart="@drawable/ic_pass"
+                    android:inputType="textPassword"
+                    android:drawablePadding="10dp"
+                    android:text="@={login.password}"
+                    style="@style/loginEditText"
+                    android:hint="@string/password" />
+
+            <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="@dimen/buttonWidth"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> login.onLoginButtonClick()}"
+                    android:text="@string/login"
+                    style="@style/buttonLarge"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{login.error ? View.VISIBLE : View.INVISIBLE}"
+                    android:layout_gravity="center"
+                    android:text="@{login.errorText}"
+                    style="@style/ErrorText"
+                    tools:text= "Error al iniciar sesión"/>
+
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>
