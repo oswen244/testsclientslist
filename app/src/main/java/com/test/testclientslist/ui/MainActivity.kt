@@ -19,6 +19,7 @@ import android.databinding.adapters.CompoundButtonBindingAdapter.setChecked
 import android.R.attr.fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.widget.DrawerLayout
+import com.test.testclientslist.ui.fragments.ProspectsListFragment
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_clients -> {
-                // Handle the camera action
+                fragment = ProspectsListFragment()
             }
 
             R.id.nav_logout -> {

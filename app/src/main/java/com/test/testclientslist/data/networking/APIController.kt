@@ -1,8 +1,14 @@
 package com.test.testclientslist.data.networking
 
+import org.json.JSONArray
 import org.json.JSONObject
 
 class APIController constructor(serviceInjection: ServiceInterface): ServiceInterface {
+
+    override fun getJsonArray(path: String, token: String, completionHandler: (response: JSONArray?) -> Unit) {
+        service.getJsonArray(path, token, completionHandler)
+    }
+
     private val service: ServiceInterface = serviceInjection
 
     override fun get(path: String, token: String, completionHandler: (response: JSONObject?) -> Unit) {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable name="viewModel" type="com.test.testclientslist.viewModel.ProspectViewModel"/>
+    </data>
+
+
+    <RelativeLayout
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:tools="http://schemas.android.com/tools"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         tools:context=".ui.fragments.ProspectsListFragment">
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+                tools:listitem="@layout/rv_item_prospect"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"/>
+
+    </RelativeLayout>
+
+</layout>

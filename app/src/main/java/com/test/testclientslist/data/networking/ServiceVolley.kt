@@ -4,9 +4,11 @@ import android.util.Log
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.VolleyLog
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.test.testclientslist.utils.Contants
+import org.json.JSONArray
 
 import org.json.JSONObject
 
@@ -16,9 +18,35 @@ class ServiceVolley: ServiceInterface {
 
     val basePath = Contants.URL
 
+    override fun getJsonArray(path: String, token: String, completionHandler: (response: JSONArray?) -> Unit) {
+
+        val jsonRequest = object : JsonArrayRequest(Method.GET, basePath +  path, null,
+
+            Response.Listener { response ->
+                Log.d(TAG, "/get request OK response: $response")
+                completionHandler(response)
+            },
+
+            Response.ErrorListener { error ->
+                VolleyLog.e(TAG, "/get resquest fail error: $error")
+                completionHandler(null)
+            }) {
+
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["token"] = token
+                return headers
+            }
+
+        }
+
+        BackendVolley.instance?.addToRequestQueue(jsonRequest, TAG)
+    }
+
     override fun get(path: String, token: String, completionHandler: (response: JSONObject?) -> Unit) {
 
-        val jsonRequest = object : JsonObjectRequest(Method.GET, basePath +  path + token, null,
+        val jsonRequest = object : JsonObjectRequest(Method.GET, basePath +  path, null,
                 Response.Listener { response ->
                     Log.d(TAG, "/get request OK response: $response")
                     completionHandler(response)
@@ -26,14 +54,21 @@ class ServiceVolley: ServiceInterface {
 
                 Response.ErrorListener { error ->
                     VolleyLog.e(TAG, "/get resquest fail error: $error")
-                    if (error.networkResponse.statusCode == 422){
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 422){
 
                         // Response just return status 422 for this error
-                        var errorResp: JSONObject = JSONObject("{\"code\":133,\"error\":\"El correo que ha ingresado no se encuentra registrado\"}")
+                        val errorResp = JSONObject("{\"code\":133,\"error\":\"El correo que ha ingresado no se encuentra registrado\"}")
                         completionHandler(errorResp)
                     }
                     completionHandler(null)
                 }) {
+
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["token"] = token
+                return headers
+            }
 
         }
 
