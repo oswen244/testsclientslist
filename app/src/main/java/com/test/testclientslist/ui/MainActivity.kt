@@ -1,28 +1,34 @@
 package com.test.testclientslist.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.test.testclientslist.R
+import com.test.testclientslist.ui.fragments.DashboardFragment
+import com.test.testclientslist.utils.LocalStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import android.databinding.adapters.CompoundButtonBindingAdapter.setChecked
+import android.R.attr.fragment
+import android.support.v4.app.FragmentTransaction
+import android.support.v4.widget.DrawerLayout
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var local: LocalStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -31,6 +37,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        local = LocalStorage(this)
+
+        displayView(R.id.nav_dashboard)
     }
 
     override fun onBackPressed() {
@@ -47,25 +57,46 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
-        }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        displayView(item.itemId)
+        setTitle(item.getTitle());
+        return true
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_camera -> {
+    fun displayView(viewId: Int) {
+
+        var fragment: Fragment? = null
+
+        when (viewId) {
+            R.id.nav_dashboard -> {
+                fragment = DashboardFragment()
+            }
+
+            R.id.nav_clients -> {
                 // Handle the camera action
+            }
+
+            R.id.nav_logout -> {
+                logout()
             }
         }
 
+        if (fragment != null) {
+            val ft = supportFragmentManager.beginTransaction()
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            ft.replace(R.id.content, fragment)
+            ft.commit()
+        }
+
         drawer_layout.closeDrawer(GravityCompat.START)
-        return true
+
+    }
+
+
+    fun logout(){
+        local.clearTokenData()
+        val intent: Intent = Intent(this, LoginActivity::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 }
