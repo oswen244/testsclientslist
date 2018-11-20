@@ -4,5 +4,6 @@ object Contants {
     val URL = "http://directotesting.igapps.co"
     val LOGIN = "/application/login"
     val CLIENTS = "/sch/prospects.json"
+    val DB = "Prospects"
 
 }

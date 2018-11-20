@@ -13,6 +13,15 @@
          android:layout_height="match_parent"
          tools:context=".ui.fragments.ProspectsListFragment">
 
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.empty ? View.VISIBLE : View.GONE}"
+                android:textSize="30sp"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-light"
+                android:text="No hay prospectos!"/>
+
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"

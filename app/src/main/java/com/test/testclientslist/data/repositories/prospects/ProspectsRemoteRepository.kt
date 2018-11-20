@@ -35,7 +35,7 @@ class ProspectsRemoteRepository(val token: String) {
                         temp.getString("cityCode"),
                         temp.getString("sectionCode"),
                         temp.getInt("roleId"),
-                        temp.getInt("appointableId"),
+                        temp.getString("appointableId"),
                         temp.getString("rejectedObservation"),
                         temp.getString("observation"),
                         temp.getBoolean("disable"),
@@ -43,7 +43,7 @@ class ProspectsRemoteRepository(val token: String) {
                         temp.getBoolean("callcenter"),
                         temp.getBoolean("acceptSearch"),
                         temp.getString("campaignCode"),
-                        temp.getInt("userId")))
+                        temp.getString("userId")))
                 }
 
                 onRepoRemoteReadyCallback.onDataReady(list)
