@@ -28,7 +28,7 @@ class ProspectsListFragment : Fragment(), ProspectsAdapter.OnItemClickListener {
 
     override fun onItemClick(position: Int) {
         val i = Intent(activity, EditActivity::class.java)
-        i.putExtra("prospect", viewModel.getOneProspect(position.toString()))
+        i.putExtra("prospect", viewModel.getOneProspect((position+1).toString()))
         startActivity(i)
     }
 

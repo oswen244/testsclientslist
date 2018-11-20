@@ -13,6 +13,9 @@ import com.test.testclientslist.utils.LZString
 import com.test.testclientslist.utils.LocalStorage
 import com.test.testclientslist.viewModel.LoginViewModel
 
+/**
+ * By: Oswaldo De la Ossa T.
+ */
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel

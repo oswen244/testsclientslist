@@ -28,7 +28,7 @@ class SqliteHelper(context: Context?, name: String?, factory: SQLiteDatabase.Cur
         db?.execSQL(CREATE_ITEM_TABLE)
 
         CREATE_ITEM_TABLE = "CREATE TABLE log ( " +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "value TEXT, " +
                 "dateTime TEXT)"
 
@@ -101,6 +101,7 @@ class SqliteHelper(context: Context?, name: String?, factory: SQLiteDatabase.Cur
     fun deleteAllRows(table: String) {
         val db = this.writableDatabase
         db.execSQL("delete from $table")
+        db.execSQL("UPDATE sqlite_sequence SET seq = 0 WHERE name = '$table'")
     }
 
 }
